@@ -1,8 +1,8 @@
 # @AppService appService
 require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
-require_relative "./choose_image_directory.rb"
-require_relative "./image_range_operator.rb"
-require_relative "./image_contrast_operator.rb"
+require_relative "./lib/choose_image_directory.rb"
+require_relative "./lib/image_range_operator.rb"
+require_relative "./lib/image_contrast_operator.rb"
 
 begin
   image_dir = ChooseImageDirectory.instance.run
