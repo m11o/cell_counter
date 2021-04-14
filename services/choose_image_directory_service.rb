@@ -22,6 +22,7 @@ class ChooseImageDirectoryService
 
   def initialize(frame)
     @frame = frame
+    @selected = false
   end
 
   def call!
@@ -32,6 +33,10 @@ class ChooseImageDirectoryService
     pabel.add build_button
 
     @frame.get_content_pane.add pabel
+  end
+
+  def selected?
+    @selected
   end
 
   private
@@ -62,9 +67,11 @@ class ChooseImageDirectoryService
     selected = file_chooser.show_opend_dialog(self)
     if selected == JFileChooser.APPROVE_OPTION
       @images = file_chooser.get_selected_files
+      @selected = true
     elsif selected == JFileChooser.CANCEL_OPTION
-      # 何もしない
+      @selected = false
     else
+      @selected = false
       raise ChooseImageDirectoryException, ERROR_MESSAGE
     end
   end
