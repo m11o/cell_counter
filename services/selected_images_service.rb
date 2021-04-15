@@ -22,9 +22,12 @@ class SelectedImagesService
   RANGE_OPERATION_LABEL = '範囲指定'.freeze
   RANGE_OPERATION_COLUMN = 1
 
+  attr_reader :max_slice_number
+
   def initialize(frame, images = [])
     @frame = frame
     @images = images
+    @max_slice_number = 0
   end
 
   def call!
@@ -54,7 +57,11 @@ class SelectedImagesService
       bio_formats_options = bio_formats_options image_file
 
       imps = BF.open_image_plus(bio_formats_options)
-      imps.each(&:show)
+      imps.each do |imp|
+        stack_number = imp.get_image_stack_size
+        @max_slice_number = stack_number if @max_slice_number < stack_number
+        imp.show
+      end
     end
 
     private
