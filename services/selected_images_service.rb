@@ -23,10 +23,9 @@ class SelectedImagesService
   RANGE_OPERATION_LABEL = '範囲指定'.freeze
   RANGE_OPERATION_COLUMN = 1
 
-  def initialize(frame, images = [], page_number = 1)
+  def initialize(frame, images = [])
     @frame = frame
     @images = images
-    @page_number = page_number
   end
 
   def call!
@@ -39,7 +38,7 @@ class SelectedImagesService
 
     panel = JScrollPane.new table
 
-    button_column = ButtonColumn.new(table, RANGE_OPERATION_COLUMN, RangeButtonActionListener.new(@page_number))
+    button_column = ButtonColumn.new(table, RANGE_OPERATION_COLUMN, RangeButtonActionListener.new)
 
     @panel.add table
     @frame.get_content_pane.add @panel
@@ -48,8 +47,7 @@ class SelectedImagesService
   class RangeButtonActionListener
     include ActionListener
 
-    def initialize(page_number)
-      @page_number = page_number
+    def initialize
       @contrast_enhancer = ContrastEnhancer.new
     end
 
@@ -68,7 +66,6 @@ class SelectedImagesService
           @contrast_enhancer.equalize(imp)
           @contrast_enhancer.stretchHistogram(imp, 0.3)
         end
-        imp.set_slice(@page_number)
         imp.show
       end
     end
