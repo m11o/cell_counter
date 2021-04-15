@@ -1,6 +1,8 @@
 # @AppService appService
 require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
 
+require_relative "./selected_images_service.rb"
+
 java_import "javax.swing.JPanel"
 java_import "javax.swing.JLable"
 java_import "javax.swing.JButton"
@@ -68,6 +70,8 @@ class ChooseImageDirectoryService
     if selected == JFileChooser.APPROVE_OPTION
       @images = file_chooser.get_selected_files
       @selected = true
+      SelectedImagesService.new(@frame, @images).call!
+      @frame.repaint
     elsif selected == JFileChooser.CANCEL_OPTION
       @selected = false
     else
