@@ -10,7 +10,6 @@ java_import "javax.swing.JTable"
 java_import "javax.swing.table.DefaultTableModel"
 java_import "javax.swing.table.TableCellRenderer"
 
-java_import "ij.plugin.ContrastEnhancer"
 java_import "ij.ImagePlus"
 
 java_import "loci.plugins.BF"
@@ -47,10 +46,6 @@ class SelectedImagesService
   class RangeButtonActionListener
     include ActionListener
 
-    def initialize
-      @contrast_enhancer = ContrastEnhancer.new
-    end
-
     def action_performed(event)
       table = event.get_source
       row = event.get_action_command.to_i
@@ -59,15 +54,7 @@ class SelectedImagesService
       bio_formats_options = bio_formats_options image_file
 
       imps = BF.open_image_plus(bio_formats_options)
-      imps.each do |imp|
-        stack_size = imp.get_image_stack_size
-        (1..stack_size).each do |slice_number|
-          imp.set_slice slice_number
-          @contrast_enhancer.equalize(imp)
-          @contrast_enhancer.stretchHistogram(imp, 0.3)
-        end
-        imp.show
-      end
+      imps.each(&:show)
     end
 
     private
