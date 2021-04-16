@@ -71,13 +71,11 @@ class ChooseImageDirectoryService < BaseService
 
     selected = file_chooser.show_opend_dialog(self)
     if selected == JFileChooser.APPROVE_OPTION
-      @images = file_chooser.get_selected_files
+      @config.images = file_chooser.get_selected_files
       @selected = true
 
-      selected_image_service = SelectedImagesService.new(@frame, @images)
-      selected_image_service.call!
-
-      ImagePageService.new(@frame, selected_image_service.max_slice_number).call!
+      SelectedImagesService.new(@frame).call!
+      ImagePageService.new(@frame).call!
 
       @frame.repaint
     elsif selected == JFileChooser.CANCEL_OPTION

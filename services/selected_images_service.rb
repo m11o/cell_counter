@@ -25,15 +25,17 @@ class SelectedImagesService < BaseService
 
   attr_reader :max_slice_number
 
-  def initialize(frame, images = [])
+  def initialize(frame)
     super
     @frame = frame
-    @images = images
     @max_slice_number = 0
   end
 
   def call!
-    table_rows = @images.map do |image|
+    return unless @config.set_images?
+    return unless @config.images.size == 0
+
+    table_rows = @config.images.map do |image|
       [image.get_name, RANGE_OPERATION_LABEL]
     end
 
@@ -61,7 +63,7 @@ class SelectedImagesService < BaseService
       imps = BF.open_image_plus(bio_formats_options)
       imps.each do |imp|
         stack_number = imp.get_image_stack_size
-        @max_slice_number = stack_number if @max_slice_number < stack_number
+        @config.max_slice_number = stack_number if @max_slice_number < stack_number
         imp.show
       end
     end
