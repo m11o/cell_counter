@@ -4,13 +4,7 @@ require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb
 require_relative "../lib/config_text_field.rb"
 require_relative "../lib/grid_bag_layout_helper.rb"
 
-java_import "javax.swing.JPanel"
 java_import "javax.swing.JLable"
-java_import "javax.swing.JTextField"
-
-java_import "java.awt.GridBagLayout"
-java_import "java.awt.GridBagConstraints"
-java_import "java.awt.Insets"
 
 class ThresholdRangeService < BaseService
   include GridBagLayoutHelper
