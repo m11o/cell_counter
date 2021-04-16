@@ -25,7 +25,7 @@ class ChooseImageDirectoryService < BaseService
   attr_reader :images
 
   def initialize(frame)
-    super
+    super()
     @frame = frame
     @selected = false
   end
