@@ -12,7 +12,7 @@ module GridBagLayoutHelper
   end
 
   def panel
-    @panel ||= @panel = JPanel.new layout
+    @panel ||= JPanel.new layout
   end
 
   def constraints
