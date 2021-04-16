@@ -65,7 +65,7 @@ class ChooseImageDirectoryService < BaseService
     @button.add_action_listener(self)
   end
 
-  def action_performed(event)
+  def action_performed(_event)
     file_chooser = JFileChooser.new
     file_chooser.set_file_selection_mode JFileChooser.DIRECTORIES_ONLY
 
