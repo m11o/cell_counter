@@ -1,7 +1,7 @@
-require_relative "../lib/config.rb"
+require_relative "../lib/config_store"
 
 class BaseService
   def initialize
-    @config = Config.instance
+    @config = ConfigStore.instance
   end
 end

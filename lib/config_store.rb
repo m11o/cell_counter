@@ -1,6 +1,9 @@
+# @AppService appService
+require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
+
 require 'singleton'
 
-class Config
+class ConfigStore
   include Singleton
 
   COLUMN = %i[image_dir images contrast_min contrast_max page_number threshold_min threshold_max particle_size_min particle_size_max max_slice_number]

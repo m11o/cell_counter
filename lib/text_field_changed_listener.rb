@@ -1,7 +1,7 @@
 # @AppService appService
 require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
 
-require_relative "./config.rb"
+require_relative "./config_store"
 
 java_import "javax.swing.event.DocumentListener"
 
@@ -11,7 +11,7 @@ class TextFieldChangedListener
   def initialize(text_field, config_attribute)
     @text_field = text_field
     @config_attribute = config_attribute
-    @config = Config.instance
+    @config = ConfigStore.instance
   end
 
   def changed_update

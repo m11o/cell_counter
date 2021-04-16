@@ -2,7 +2,7 @@
 require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
 
 require_relative "./base_service.rb"
-require_relative "../lib/config"
+require_relative "../lib/config_store"
 
 java_import "javax.swing.JComboBox"
 java_import "java.awt.event.ItemListener"
@@ -29,7 +29,7 @@ class ImagePageService < BaseService
     include ItemListener
 
     def initialize
-      @config = Config.instance
+      @config = ConfigStore.instance
     end
 
     def item_state_changed(event)
