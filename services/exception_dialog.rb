@@ -13,14 +13,13 @@ class ExceptionDialog
     @error_message = message
   end
 
-  private
-
   def call!
-    diablog = JDialog.new @frame
-    label = JLabel.new @message
+    dialog = JDialog.new @frame
+    dialog.set_title('Error Log')
+    label = JLabel.new @error_message
 
-    diablog.get_content_pane.add(label, 'Center')
-    diablog.pack
-    diablog.set_visible(true)
+    dialog.get_content_pane.add(label, 'Center')
+    dialog.pack
+    dialog.set_visible(true)
   end
 end
