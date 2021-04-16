@@ -3,7 +3,7 @@ require 'singleton'
 class Config
   include Singleton
 
-  COLUMN = %i[image_dir images contrast_min contrast_max page_number threshold_min threshold_max particle_size_min particle_size_max]
+  COLUMN = %i[image_dir images contrast_min contrast_max page_number threshold_min threshold_max particle_size_min particle_size_max max_slice_number]
 
   attr_accessor *COLUMN
 
