@@ -6,13 +6,12 @@ require_relative "../lib/grid_bag_layout_helper.rb"
 
 java_import "javax.swing.JLabel"
 
-class ThresholdRangeService < BaseService
+class ThresholdRangeService
   include GridBagLayoutHelper
 
   MAX_TEXT_FIELD_COUNT = 10
 
   def initialize(frame)
-    super()
     @frame = frame
   end
 
