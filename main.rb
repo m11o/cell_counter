@@ -1,14 +1,25 @@
 # @AppService appService
 require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
-require_relative "./lib/choose_image_directory.rb"
-require_relative "./lib/image_range_operator.rb"
-require_relative "./lib/image_contrast_operator.rb"
 
+require_relative './services/choose_image_directory_service'
+require_relative './services/exception_dialog'
+require_relative './services/contrast_range_service'
+require_relative './services/image_page_service'
+require_relative './services/particle_size_range_service'
+require_relative './services/threshold_range_service'
+
+java_import "javax.swing.JFrame"
+
+frame = JFrame.new 'multiply cell counter'
 begin
-  image_dir = ChooseImageDirectory.instance.run
-  puts "Choosed image directory is #{image_dir}"
+  ChooseImageDirectoryService.new(frame).call!
+  ImagePageService.new(frame).call!
+  ContrastRangeService.new(frame).call!
+  ThresholdRangeService.new(frame).call!
+  ParticleSizeRangeService.new(frame).call!
 
-  ImageRangeOperator.new(image_dir).run
+  frame.pack
+  frame.set_visible(true)
 rescue => e
-  # 何もしない
+  ExceptionDialog.new frame, e.message
 end
