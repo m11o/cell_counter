@@ -14,7 +14,7 @@ class Config
   end
 
   def method_missing(name, *args)
-    return super if name =~ /\Aset_(.+?)\?\z/
+    return super if name !~ /\Aset_(.+?)\?\z/
     return super unless COLUMN.include? Regexp.last_matches[0]
 
     set? Regexp.last_matches[0]
