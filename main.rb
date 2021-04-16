@@ -21,5 +21,7 @@ begin
   frame.pack
   frame.set_visible(true)
 rescue => e
-  ExceptionDialog.new frame, e.message
+  puts e
+  puts e.backtrace.join("\n")
+  ExceptionDialog.call! frame, 'エラーが発生しました'
 end
