@@ -7,7 +7,7 @@ java_import "javax.swing.JComboBox"
 
 class ImagePageService < BaseService
   def initialize(frame)
-    super
+    super()
     @frame = frame
   end
 
