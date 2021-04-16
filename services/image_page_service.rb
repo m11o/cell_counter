@@ -1,10 +1,13 @@
 # @AppService appService
 require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
 
+require_relative "./base_service.rb"
+
 java_import "javax.swing.JComboBox"
 
-class ImagePageService
+class ImagePageService < BaseService
   def initialize(frame, max_slice_number = 0)
+    super
     @frame = frame
     @max_slice_number = max_slice_number
   end

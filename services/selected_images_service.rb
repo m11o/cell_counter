@@ -2,6 +2,7 @@
 require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
 
 require_relative "../lib/table/button_column.rb"
+require_relative "./base_service.rb"
 
 java_import "javax.swing.JScrollPane"
 java_import "javax.swing.JLable"
@@ -17,7 +18,7 @@ java_import "loci.plugins.in.ImporterOptions"
 
 java_import "java.awt.event.ActionListener"
 
-class SelectedImagesService
+class SelectedImagesService < BaseService
   IMAGES_TABLE_COLUMN = ['画像名', ''].freeze
   RANGE_OPERATION_LABEL = '範囲指定'.freeze
   RANGE_OPERATION_COLUMN = 1
@@ -25,6 +26,7 @@ class SelectedImagesService
   attr_reader :max_slice_number
 
   def initialize(frame, images = [])
+    super
     @frame = frame
     @images = images
     @max_slice_number = 0

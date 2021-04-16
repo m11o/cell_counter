@@ -3,6 +3,7 @@ require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb
 
 require_relative "./selected_images_service.rb"
 require_relative "./image_page_service.rb"
+require_relative "./base_service.rb"
 
 java_import "javax.swing.JPanel"
 java_import "javax.swing.JLable"
@@ -15,7 +16,7 @@ java_import "java.awt.event.ActionListener"
 
 class ChooseImageDirectoryException < StandardError; end
 
-class ChooseImageDirectoryService
+class ChooseImageDirectoryService < BaseService
   include ActionListener
 
   IMAGE_DIRECTORY_LABEL = '画像フォルダ'.freeze
@@ -24,6 +25,7 @@ class ChooseImageDirectoryService
   attr_reader :images
 
   def initialize(frame)
+    super
     @frame = frame
     @selected = false
   end
