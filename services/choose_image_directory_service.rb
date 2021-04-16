@@ -4,13 +4,12 @@ require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb
 require_relative "./selected_images_service.rb"
 require_relative "./image_page_service.rb"
 require_relative "./base_service.rb"
+require_relative "../lib/grid_bag_layout_helper"
+require_relative "../lib/config_text_field"
 
-java_import "javax.swing.JPanel"
-java_import "javax.swing.JLable"
+java_import "javax.swing.JLabel"
 java_import "javax.swing.JButton"
-java_import "javax.swing.JTextField"
 java_import "javax.swing.JFileChooser"
-java_import "javax.swing.BoxLayout"
 
 java_import "java.awt.event.ActionListener"
 
@@ -18,6 +17,7 @@ class ChooseImageDirectoryException < StandardError; end
 
 class ChooseImageDirectoryService < BaseService
   include ActionListener
+  include GridBagLayoutHelper
 
   IMAGE_DIRECTORY_LABEL = '画像フォルダ'.freeze
   ERROR_MESSAGE = 'エラーが発生しました。時間を置いてから再度実行してください'
@@ -31,13 +31,15 @@ class ChooseImageDirectoryService < BaseService
   end
 
   def call!
-    panel = build_panel
+    add_component_with_constraints(0, 0, 1, 1) { JLabel.new IMAGE_DIRECTORY_LABEL }
+    add_component_with_constraints(1, 0, 1, 1) { ConfigTextField.new(:image_dir) }
+    add_component_with_constraints(2, 0, 1, 1) do
+      button = JButton.new('フォルダ選択')
+      button.add_action_listener(self)
+      button
+    end
 
-    panel.add build_label
-    panel.add build_text_field
-    panel.add build_button
-
-    @frame.get_content_pane.add pabel
+    @frame.get_content_pane.add panel
   end
 
   def selected?
@@ -45,25 +47,6 @@ class ChooseImageDirectoryService < BaseService
   end
 
   private
-
-  def build_panel
-    panel = JPanel.new
-    panel.set_layout(BoxLayout.new(panel, BoxLayout.X_AXIS))
-    panel
-  end
-
-  def build_label
-    @label = JLabel.new IMAGE_DIRECTORY_LABEL
-  end
-
-  def build_text_field
-    @text_field = JTextField.new('', 100)
-  end
-
-  def build_button
-    @button = JButton.new('フォルダ選択')
-    @button.add_action_listener(self)
-  end
 
   def action_performed(_event)
     file_chooser = JFileChooser.new

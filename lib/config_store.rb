@@ -18,8 +18,10 @@ class ConfigStore
 
   def method_missing(name, *args)
     return super if name !~ /\Aset_(.+?)\?\z/
-    return super unless COLUMN.include? Regexp.last_match[0]
 
-    set? Regexp.last_matches[0]
+    column_name = Regexp.last_match[1].to_sym
+    return super unless COLUMN.include? column_name
+
+    set? column_name
   end
 end
