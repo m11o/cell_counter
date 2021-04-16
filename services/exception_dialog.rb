@@ -10,7 +10,7 @@ class ExceptionDialog
 
   def initialize(frame, message)
     @frame = frame
-    @error_message = error_message
+    @error_message = message
   end
 
   private
