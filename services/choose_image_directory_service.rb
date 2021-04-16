@@ -35,7 +35,7 @@ class ChooseImageDirectoryService < BaseService
 
     panel.add build_label
     panel.add build_text_field
-    pabel.add build_button
+    panel.add build_button
 
     @frame.get_content_pane.add pabel
   end
