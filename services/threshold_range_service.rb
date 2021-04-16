@@ -12,7 +12,7 @@ class ThresholdRangeService < BaseService
   MAX_TEXT_FIELD_COUNT = 10
 
   def initialize(frame)
-    super
+    super()
     @frame = frame
   end
 
