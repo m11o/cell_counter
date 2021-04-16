@@ -5,7 +5,7 @@ require_relative "../lib/table/button_column.rb"
 require_relative "./base_service.rb"
 
 java_import "javax.swing.JScrollPane"
-java_import "javax.swing.JLable"
+java_import "javax.swing.JLabel"
 java_import "javax.swing.JButton"
 java_import "javax.swing.JTable"
 java_import "javax.swing.table.DefaultTableModel"
