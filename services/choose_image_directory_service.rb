@@ -10,8 +10,8 @@ java_import "javax.swing.JLable"
 java_import "javax.swing.JButton"
 java_import "javax.swing.JTextField"
 java_import "javax.swing.JFileChooser"
+java_import "javax.swing.BoxLayout"
 
-java_import "java.awt.BoxLayout"
 java_import "java.awt.event.ActionListener"
 
 class ChooseImageDirectoryException < StandardError; end
