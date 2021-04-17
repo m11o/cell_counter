@@ -22,7 +22,7 @@ class ImagePageService < BaseService
 
     combo_box.add_item_listener ImagePageSelectedListener.new
 
-    @frame.get_content_pane.add combo_box
+    @frame.add combo_box
   end
 
   class ImagePageSelectedListener

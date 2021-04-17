@@ -39,7 +39,7 @@ class ChooseImageDirectoryService < BaseService
       button
     end
 
-    @frame.get_content_pane.add panel
+    @frame.add panel
   end
 
   def selected?
@@ -50,10 +50,10 @@ class ChooseImageDirectoryService < BaseService
 
   def action_performed(_event)
     file_chooser = JFileChooser.new
-    file_chooser.set_file_selection_mode JFileChooser.DIRECTORIES_ONLY
+    file_chooser.set_file_selection_mode JFileChooser::DIRECTORIES_ONLY
 
-    selected = file_chooser.show_opend_dialog(self)
-    if selected == JFileChooser.APPROVE_OPTION
+    selected = file_chooser.show_open_dialog(self)
+    if selected == JFileChooser::APPROVE_OPTION
       @config.images = file_chooser.get_selected_files
       @selected = true
 
@@ -61,7 +61,7 @@ class ChooseImageDirectoryService < BaseService
       ImagePageService.new(@frame).call!
 
       @frame.repaint
-    elsif selected == JFileChooser.CANCEL_OPTION
+    elsif selected == JFileChooser::CANCEL_OPTION
       @selected = false
     else
       @selected = false

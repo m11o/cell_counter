@@ -26,7 +26,7 @@ class SelectedImagesService < BaseService
   attr_reader :max_slice_number
 
   def initialize(frame)
-    super
+    super()
     @frame = frame
     @max_slice_number = 0
   end
@@ -44,10 +44,10 @@ class SelectedImagesService < BaseService
 
     panel = JScrollPane.new table
 
-    button_column = ButtonColumn.new(table, RANGE_OPERATION_COLUMN, RangeButtonActionListener.new)
+    ButtonColumn.new(table, RANGE_OPERATION_COLUMN, RangeButtonActionListener.new)
 
-    @panel.add table
-    @frame.get_content_pane.add @panel
+    panel.add table
+    @frame.add @panel
   end
 
   class RangeButtonActionListener
@@ -58,7 +58,7 @@ class SelectedImagesService < BaseService
       row = event.get_action_command.to_i
 
       image_file = table.get_value_at(row - 1, RANGE_OPERATION_COLUMN)
-      bio_formats_options = bio_formats_options image_file
+      bio_formats_options = bio_formats_options image_file.get_path
 
       imps = BF.open_image_plus(bio_formats_options)
       imps.each do |imp|
@@ -72,7 +72,7 @@ class SelectedImagesService < BaseService
 
     def bio_formats_options(image_path)
       options = ImporterOptions.new
-      options.set_id @image_path
+      options.set_id image_path
       options.set_autoscale true
       options
     end

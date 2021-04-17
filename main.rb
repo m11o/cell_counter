@@ -4,16 +4,17 @@ require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb
 require_relative './services/choose_image_directory_service'
 require_relative './services/exception_dialog'
 require_relative './services/contrast_range_service'
-require_relative './services/image_page_service'
 require_relative './services/particle_size_range_service'
 require_relative './services/threshold_range_service'
 
 java_import "javax.swing.JFrame"
+java_import "java.awt.FlowLayout"
 
 frame = JFrame.new 'multiply cell counter'
+frame.set_layout(FlowLayout.new)
+frame.set_size(500, 500)
 begin
   ChooseImageDirectoryService.new(frame).call!
-  ImagePageService.new(frame).call!
   ContrastRangeService.new(frame).call!
   ThresholdRangeService.new(frame).call!
   ParticleSizeRangeService.new(frame).call!

@@ -22,6 +22,6 @@ class ParticleSizeRangeService
     add_component_with_constraints(0, 2, 1, 1) { JLabel.new '最大値' }
     add_component_with_constraints(1, 2, 1, 1) { ConfigTextField.new :particle_size_max, '', MAX_TEXT_FIELD_COUNT }
 
-    @frame.get_content_pane.add panel
+    @frame.add panel
   end
 end
