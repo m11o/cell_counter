@@ -42,6 +42,10 @@ class ChooseImageDirectoryService < BaseService
     @frame.add panel
   end
 
+  def panel
+    super
+  end
+
   def selected?
     @selected
   end
@@ -52,7 +56,7 @@ class ChooseImageDirectoryService < BaseService
     file_chooser = JFileChooser.new
     file_chooser.set_file_selection_mode JFileChooser::DIRECTORIES_ONLY
 
-    selected = file_chooser.show_open_dialog(self)
+    selected = file_chooser.show_open_dialog(@frame)
     if selected == JFileChooser::APPROVE_OPTION
       @config.images = file_chooser.get_selected_files
       @selected = true
