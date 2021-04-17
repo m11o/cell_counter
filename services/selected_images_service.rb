@@ -19,7 +19,7 @@ java_import "loci.plugins.in.ImporterOptions"
 java_import "java.awt.event.ActionListener"
 
 class SelectedImagesService < BaseService
-  IMAGES_TABLE_COLUMN = ['画像名', ''].freeze
+  IMAGES_TABLE_COLUMN = %w[画像名 操作]
   RANGE_OPERATION_LABEL = '範囲指定'.freeze
   RANGE_OPERATION_COLUMN = 1
 
@@ -33,10 +33,10 @@ class SelectedImagesService < BaseService
 
   def call!
     return unless @config.set_images?
-    return unless @config.images.size == 0
+    return if @config.images.size.zero?
 
-    table_rows = @config.images.map do |image|
-      [image.get_name, RANGE_OPERATION_LABEL]
+    table_rows = @config.images.map do |image_path|
+      [image_path, RANGE_OPERATION_LABEL]
     end
 
     model = DefaultTableModel.new table_rows, IMAGES_TABLE_COLUMN

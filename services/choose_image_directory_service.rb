@@ -58,7 +58,9 @@ class ChooseImageDirectoryService < BaseService
 
     selected = file_chooser.show_open_dialog(@frame)
     if selected == JFileChooser::APPROVE_OPTION
-      @config.images = file_chooser.get_selected_files
+      @config.image_dir = file_chooser.get_selected_file.get_path
+      @config.images = []
+      Dir.glob("#{@config.image_dir}/*") { |image_path| @config.images << image_path }
       @selected = true
 
       SelectedImagesService.new(@frame).call!
