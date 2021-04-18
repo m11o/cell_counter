@@ -12,6 +12,7 @@ java_import "javax.swing.JButton"
 java_import "javax.swing.JFileChooser"
 
 java_import "java.awt.event.ActionListener"
+java_import "java.awt.Insets"
 
 class ChooseImageDirectoryException < StandardError; end
 
@@ -31,9 +32,11 @@ class ChooseImageDirectoryService < BaseService
   end
 
   def call!
-    add_component_with_constraints(0, 0, 1, 1) { JLabel.new IMAGE_DIRECTORY_LABEL }
-    add_component_with_constraints(1, 0, 1, 1) { ConfigTextField.new(:image_dir) }
-    add_component_with_constraints(2, 0, 1, 1) do
+    add_component_with_constraints(0, 0, 1, 1) do |constraints|
+      constraints.insets = Insets.new(0, 10, 0, 5)
+      JLabel.new IMAGE_DIRECTORY_LABEL
+    end
+    add_component_with_constraints(1, 0, 1, 1) do
       button = JButton.new('フォルダ選択')
       button.add_action_listener(self)
       button
@@ -63,9 +66,13 @@ class ChooseImageDirectoryService < BaseService
       Dir.glob("#{@config.image_dir}/*") { |image_path| @config.images << image_path }
       @selected = true
 
+      add_component_with_constraints(0, 1, 2, 1) { JLabel.new @config.image_dir }
+
       SelectedImagesService.new(@frame).call!
       ImagePageService.new(@frame).call!
 
+      panel.updateUI
+      @frame.pack
       @frame.repaint
     elsif selected == JFileChooser::CANCEL_OPTION
       @selected = false
