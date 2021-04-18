@@ -19,11 +19,12 @@ module GridBagLayoutHelper
     @constraints ||= GridBagConstraints.new
   end
 
-  def add_component_with_constraints(gridx, gridy, gridwidth, gridheight, &block)
+  def add_component_with_constraints(gridx, gridy, gridwidth, gridheight, anchor = GridBagConstraints::WEST, &block)
     constraints.gridx = gridx
     constraints.gridy = gridy
     constraints.gridwidth = gridwidth
     constraints.gridheight = gridheight
+    constraints.anchor = anchor
 
     component = block.call constraints
     layout.set_constraints component, constraints
