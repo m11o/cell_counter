@@ -14,16 +14,16 @@ class TextFieldChangedListener
     @config = ConfigStore.instance
   end
 
-  def changed_update
-    self.value = text_field.get_text
+  def changed_update(_event)
+    self.value = @text_field.get_text
   end
 
-  def remove_update
-    self.value = text_field.get_text
+  def remove_update(_event)
+    self.value = @text_field.get_text
   end
 
-  def insert_update
-    self.value = text_field.get_text
+  def insert_update(_event)
+    self.value = @text_field.get_text
   end
 
   private
