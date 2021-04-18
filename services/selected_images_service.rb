@@ -40,8 +40,10 @@ class SelectedImagesService < BaseService
 
     add_component_with_constraints(0, 3, 2, @config.images.count + 1) do |constraints|
       constraints.insets = build_padding_insets left: 10
-      model = DefaultTableModel.new table_rows.to_java(java.lang.String[]), IMAGES_TABLE_COLUMN.to_java
-      table = JTable.new model
+
+      table = JTable.new table_rows.to_java(java.lang.String[]), IMAGES_TABLE_COLUMN.to_java
+      update_table_column_width table
+
       ButtonColumn.new(table, RANGE_OPERATION_COLUMN, RangeButtonActionListener.new)
 
       table
@@ -64,6 +66,15 @@ class SelectedImagesService < BaseService
     @config.images.map do |image_path|
       [File.basename(image_path), RANGE_OPERATION_LABEL]
     end
+  end
+
+  def update_table_column_width(table)
+    table_column_model = table.get_column_model
+    filename_column = table_column_model.get_column(0)
+    filename_column.set_preferred_width 280
+
+    operator_column = table_column_model.get_column(1)
+    operator_column.set_preferred_width 80
   end
 
   class RangeButtonActionListener
