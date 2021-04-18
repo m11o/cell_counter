@@ -42,7 +42,7 @@ class SelectedImagesService < BaseService
       [image_path, RANGE_OPERATION_LABEL]
     end
 
-    add_component_with_constraints(0, 2, 2, @config.images.count + 1) do
+    add_component_with_constraints(0, 3, 1, @config.images.count + 1) do
       model = DefaultTableModel.new table_rows.to_java(java.lang.String[]), IMAGES_TABLE_COLUMN.to_java
       table = JTable.new model
       ButtonColumn.new(table, RANGE_OPERATION_COLUMN, RangeButtonActionListener.new)
