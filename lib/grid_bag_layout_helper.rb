@@ -25,7 +25,7 @@ module GridBagLayoutHelper
     constraints.gridwidth = gridwidth
     constraints.gridheight = gridheight
 
-    component = block.call
+    component = block.call constraints
     layout.set_constraints component, constraints
     panel.add component
   end
