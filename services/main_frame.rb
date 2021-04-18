@@ -15,7 +15,6 @@ class MainFrame < JFrame
   def initialize(title)
     super title
 
-    set_default_close_operation(EXIT_ON_CLOSE)
     @pane = get_content_pane
     @pane.set_layout(GridLayout.new(4, 1))
   end
