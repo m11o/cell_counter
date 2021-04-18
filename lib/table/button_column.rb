@@ -9,13 +9,10 @@ java_import "javax.swing.AbstractCellEditor"
 java_import "javax.swing.UIManager"
 
 java_import "java.awt.event.ActionListener"
-java_import "java.awt.event.MouseListener"
-java_import "java.awt.event.ActionEvent"
 
 class ButtonColumn
   include TableCellRenderer
   include ActionListener
-  include MouseListener
 
   def initialize(table, column, action)
     @table = table
@@ -25,10 +22,9 @@ class ButtonColumn
 
     column_model = table.get_column_model
     column_model.get_column(column).set_cell_renderer(self)
-    @table.add_mouse_listener(self)
   end
 
-  def getTableCellRendererComponent(table, value, is_selected, has_focus, row, column)
+  def getTableCellRendererComponent(_table, value, _is_selected, _has_focus, _row, _column)
     @button.set_text(value.to_s)
     @button.set_icon(nil)
     @button
