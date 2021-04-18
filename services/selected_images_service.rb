@@ -38,10 +38,6 @@ class SelectedImagesService < BaseService
     return unless @config.set_images?
     return if @config.images.size.zero?
 
-    table_rows = @config.images.map do |image_path|
-      [image_path, RANGE_OPERATION_LABEL]
-    end
-
     add_component_with_constraints(0, 3, 2, @config.images.count + 1) do |constraints|
       constraints.insets = build_padding_insets left: 10
       model = DefaultTableModel.new table_rows.to_java(java.lang.String[]), IMAGES_TABLE_COLUMN.to_java
@@ -60,6 +56,14 @@ class SelectedImagesService < BaseService
   # @Override
   def layout
     @panel.get_layout
+  end
+
+  private
+
+  def table_rows
+    @config.images.map do |image_path|
+      [File.basename(image_path), RANGE_OPERATION_LABEL]
+    end
   end
 
   class RangeButtonActionListener
