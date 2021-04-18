@@ -27,7 +27,10 @@ class MinmaxField
     add_component_with_constraints(0, 2, 1, 1) { JLabel.new MAX_LABEL }
     add_component_with_constraints(1, 2, 1, 1) { ConfigTextField.new @max_field_name, '', MAX_TEXT_FIELD_COUNT }
 
-    @frame.add_component_with_constraints(*self.class.constraints_position) { panel }
+    @frame.add_component_with_constraints(*self.class.constraints_position) do |constraints|
+      constraints.insets = build_padding_insets **self.class.padding_insets
+      panel
+    end
   end
 
   def self.set_constraints_position(grid_x, grid_y, grid_width, grid_height)
@@ -36,6 +39,12 @@ class MinmaxField
       @grid_y = grid_y
       @grid_width = grid_width
       @grid_height = grid_height
+    end
+  end
+
+  def self.set_padding_insets(top, left, bottom, right)
+    class_eval do
+      @padding_insets_value = { top: top, left: left, bottom: bottom, right: right }
     end
   end
 
@@ -50,5 +59,9 @@ class MinmaxField
 
   def self.constraints_position
     [@grid_x, @grid_y, @grid_width, @grid_height]
+  end
+
+  def self.padding_insets
+    @padding_insets_value
   end
 end
