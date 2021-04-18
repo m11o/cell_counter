@@ -5,6 +5,7 @@ java_import "javax.swing.JPanel"
 
 java_import "java.awt.GridBagLayout"
 java_import "java.awt.GridBagConstraints"
+java_import "java.awt.Insets"
 
 module GridBagLayoutHelper
   def layout
@@ -29,5 +30,9 @@ module GridBagLayoutHelper
     component = block.call constraints
     layout.set_constraints component, constraints
     panel.add component
+  end
+
+  def build_padding_insets(top: 0, left: 0, bottom: 0, right: 0)
+    Insets.new top, left, bottom, right
   end
 end
