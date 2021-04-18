@@ -33,7 +33,7 @@ class ChooseImageDirectoryService < BaseService
 
   def call!
     add_component_with_constraints(0, 0, 1, 1) do |constraints|
-      constraints.insets = build_padding_insets left: 10, right: 5
+      constraints.insets = build_padding_insets left: 10, right: 5, top: 10
       JLabel.new IMAGE_DIRECTORY_LABEL
     end
     add_component_with_constraints(1, 0, 1, 1) do
