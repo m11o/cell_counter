@@ -4,7 +4,7 @@ require_relative "../lib/text_field_changed_listener.rb"
 
 java_import "javax.swing.JTextField"
 
-class ConfigTextField < JTextField
+class ConfigNumberField < JTextField
   def initialize(config_name, placeholder = '', column_count = 100)
     super placeholder, column_count
     @config_name = config_name

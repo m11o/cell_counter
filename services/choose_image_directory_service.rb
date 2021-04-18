@@ -44,10 +44,6 @@ class ChooseImageDirectoryService < BaseService
     @frame.add_component_with_constraints(0, 0, 2, 1) { panel }
   end
 
-  def panel
-    super
-  end
-
   def selected?
     @selected
   end

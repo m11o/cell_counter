@@ -1,7 +1,7 @@
 # @AppService appService
 require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
 
-require_relative "../lib/config_text_field.rb"
+require_relative "../lib/config_number_field.rb"
 require_relative "../lib/grid_bag_layout_helper.rb"
 
 java_import "javax.swing.JLabel"
@@ -23,9 +23,9 @@ class MinmaxField
   def draw!
     add_component_with_constraints(0, 0, 1, 1) { JLabel.new nl2br(@title) }
     add_component_with_constraints(0, 1, 1, 1) { JLabel.new MIN_LABEL }
-    add_component_with_constraints(1, 1, 1, 1) { ConfigTextField.new @min_field_name, '', MAX_TEXT_FIELD_COUNT }
+    add_component_with_constraints(1, 1, 1, 1) { ConfigNumberField.new @min_field_name, '', MAX_TEXT_FIELD_COUNT }
     add_component_with_constraints(0, 2, 1, 1) { JLabel.new MAX_LABEL }
-    add_component_with_constraints(1, 2, 1, 1) { ConfigTextField.new @max_field_name, '', MAX_TEXT_FIELD_COUNT }
+    add_component_with_constraints(1, 2, 1, 1) { ConfigNumberField.new @max_field_name, '', MAX_TEXT_FIELD_COUNT }
 
     @frame.add_component_with_constraints(*self.class.constraints_position) do |constraints|
       constraints.insets = build_padding_insets **self.class.padding_insets
