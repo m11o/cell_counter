@@ -3,6 +3,7 @@ require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb
 
 require_relative "../lib/table/button_column.rb"
 require_relative "./base_service.rb"
+require_relative "../lib/grid_bag_layout_helper"
 
 java_import "javax.swing.JScrollPane"
 java_import "javax.swing.JLabel"
@@ -19,15 +20,17 @@ java_import "loci.plugins.in.ImporterOptions"
 java_import "java.awt.event.ActionListener"
 
 class SelectedImagesService < BaseService
+  include GridBagLayoutHelper
+
   IMAGES_TABLE_COLUMN = %w[画像名 操作]
   RANGE_OPERATION_LABEL = '範囲指定'.freeze
   RANGE_OPERATION_COLUMN = 1
 
   attr_reader :max_slice_number
 
-  def initialize(frame)
+  def initialize(panel)
     super()
-    @frame = frame
+    @panel = panel
     @max_slice_number = 0
   end
 
@@ -39,15 +42,23 @@ class SelectedImagesService < BaseService
       [image_path, RANGE_OPERATION_LABEL]
     end
 
-    model = DefaultTableModel.new table_rows.to_java(java.lang.String[]), IMAGES_TABLE_COLUMN.to_java
-    table = JTable.new model
+    add_component_with_constraints(0, 2, 2, @config.images.count + 1) do
+      model = DefaultTableModel.new table_rows.to_java(java.lang.String[]), IMAGES_TABLE_COLUMN.to_java
+      table = JTable.new model
+      ButtonColumn.new(table, RANGE_OPERATION_COLUMN, RangeButtonActionListener.new)
 
-    panel = JScrollPane.new table
+      table
+    end
+  end
 
-    ButtonColumn.new(table, RANGE_OPERATION_COLUMN, RangeButtonActionListener.new)
+  # @Override
+  def panel
+    @panel
+  end
 
-    panel.add table
-    @frame.add panel
+  # @Override
+  def layout
+    @panel.get_layout
   end
 
   class RangeButtonActionListener
