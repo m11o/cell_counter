@@ -38,9 +38,7 @@ class SelectedImagesService < BaseService
     return unless @config.set_images?
     return if @config.images.size.zero?
 
-    add_component_with_constraints(0, 3, 2, @config.images.count + 1) do |constraints|
-      constraints.insets = build_padding_insets left: 10
-
+    add_component_with_constraints(0, 3, 2, @config.images.count + 1, anchor_center) do
       table = JTable.new table_rows.to_java(java.lang.String[]), IMAGES_TABLE_COLUMN.to_java
       update_table_column_width table
 
