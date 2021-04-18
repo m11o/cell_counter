@@ -69,7 +69,7 @@ class ChooseImageDirectoryService < BaseService
       add_component_with_constraints(0, 1, 2, 1) { JLabel.new @config.image_dir }
 
       SelectedImagesService.new(panel).call!
-      ImagePageService.new(@frame).call!
+      ImagePageService.new(panel).call!
 
       panel.updateUI
       @frame.pack
