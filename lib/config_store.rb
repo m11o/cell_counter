@@ -1,6 +1,3 @@
-# @AppService appService
-require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
-
 require 'singleton'
 
 class ConfigStore

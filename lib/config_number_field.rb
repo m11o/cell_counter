@@ -1,5 +1,3 @@
-require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
-
 require_relative "../lib/text_field_changed_listener.rb"
 
 java_import "javax.swing.JTextField"

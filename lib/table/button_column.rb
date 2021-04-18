@@ -1,6 +1,3 @@
-# @AppService appService
-require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
-
 java_import "javax.swing.JButton"
 
 java_import "javax.swing.table.TableCellRenderer"

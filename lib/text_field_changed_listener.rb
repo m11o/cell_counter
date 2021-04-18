@@ -1,6 +1,3 @@
-# @AppService appService
-require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
-
 require_relative "./config_store"
 
 java_import "javax.swing.event.DocumentListener"

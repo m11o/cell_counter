@@ -1,5 +1,3 @@
-require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
-
 java_import "javax.swing.JDialog"
 java_import "javax.swing.JLabel"
 

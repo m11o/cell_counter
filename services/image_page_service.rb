@@ -1,6 +1,3 @@
-# @AppService appService
-require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
-
 require_relative "./base_service.rb"
 require_relative "../lib/config_store"
 require_relative "../lib/grid_bag_layout_helper"

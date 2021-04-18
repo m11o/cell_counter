@@ -1,6 +1,3 @@
-# @AppService appService
-require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb"
-
 require_relative './choose_image_directory_service'
 require_relative './exception_dialog'
 require_relative './contrast_range_field'
