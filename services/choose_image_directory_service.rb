@@ -5,7 +5,6 @@ require_relative "./selected_images_service.rb"
 require_relative "./image_page_service.rb"
 require_relative "./base_service.rb"
 require_relative "../lib/grid_bag_layout_helper"
-require_relative "../lib/config_text_field"
 
 java_import "javax.swing.JLabel"
 java_import "javax.swing.JButton"
