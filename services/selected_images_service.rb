@@ -39,7 +39,7 @@ class SelectedImagesService < BaseService
       [image_path, RANGE_OPERATION_LABEL]
     end
 
-    model = DefaultTableModel.new table_rows, IMAGES_TABLE_COLUMN
+    model = DefaultTableModel.new table_rows.to_java(java.lang.String[]), IMAGES_TABLE_COLUMN.to_java
     table = JTable.new model
 
     panel = JScrollPane.new table
@@ -47,7 +47,7 @@ class SelectedImagesService < BaseService
     ButtonColumn.new(table, RANGE_OPERATION_COLUMN, RangeButtonActionListener.new)
 
     panel.add table
-    @frame.add @panel
+    @frame.add panel
   end
 
   class RangeButtonActionListener
