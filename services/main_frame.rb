@@ -6,17 +6,25 @@ require_relative './exception_dialog'
 require_relative './contrast_range_field'
 require_relative './particle_size_range_field'
 require_relative './threshold_range_field'
+require_relative '../lib/grid_bag_layout_helper'
 
 java_import "javax.swing.JFrame"
 
-java_import "java.awt.GridLayout"
+java_import "java.awt.GridBagLayout"
+java_import "java.awt.GridBagConstraints"
 
 class MainFrame < JFrame
+  include GridBagLayoutHelper
+
+  attr_reader :layout, :constraints, :panel
+
   def initialize(title)
     super title
 
-    @pane = get_content_pane
-    @pane.set_layout(GridLayout.new(4, 1))
+    @layout = GridBagLayout.new
+    @constraints = GridBagConstraints.new
+    @panel = get_content_pane
+    @panel.set_layout(@layout)
   end
 
   def draw

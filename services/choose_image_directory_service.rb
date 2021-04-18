@@ -42,7 +42,7 @@ class ChooseImageDirectoryService < BaseService
       button
     end
 
-    @frame.add panel
+    @frame.add_component_with_constraints(0, 0, 2, 1) { panel }
   end
 
   def panel
