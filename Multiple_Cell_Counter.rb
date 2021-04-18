@@ -371,7 +371,7 @@ class MinmaxPanel < GridBagConstraintsBasePanel
 end
 
 # =============================================================================
-# MinmaxPanel
+# ExceptionDialog
 # =============================================================================
 class ExceptionDialog
   def self.call!(frame, message)
