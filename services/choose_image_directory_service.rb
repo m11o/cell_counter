@@ -33,7 +33,7 @@ class ChooseImageDirectoryService < BaseService
 
   def call!
     add_component_with_constraints(0, 0, 1, 1) do |constraints|
-      constraints.insets = Insets.new(0, 10, 0, 5)
+      constraints.insets = build_padding_insets left: 10, right: 5
       JLabel.new IMAGE_DIRECTORY_LABEL
     end
     add_component_with_constraints(1, 0, 1, 1) do
@@ -66,7 +66,10 @@ class ChooseImageDirectoryService < BaseService
       Dir.glob("#{@config.image_dir}/*") { |image_path| @config.images << image_path }
       @selected = true
 
-      add_component_with_constraints(0, 1, 2, 1) { JLabel.new @config.image_dir }
+      add_component_with_constraints(0, 1, 2, 1) do |constraints|
+        constraints.insets = build_padding_insets left: 10, right: 10, bottom: 5
+        JLabel.new @config.image_dir
+      end
 
       SelectedImagesService.new(panel).call!
       ImagePageService.new(panel).call!
