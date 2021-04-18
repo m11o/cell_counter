@@ -13,8 +13,6 @@ java_import "java.awt.GridBagConstraints"
 class MainFrame < JFrame
   include GridBagLayoutHelper
 
-  attr_reader :layout, :constraints, :panel
-
   def initialize(title)
     super title
 
