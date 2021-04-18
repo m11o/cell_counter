@@ -3,9 +3,9 @@ require_relative "#{$appService.getApp.getBaseDirectory}/plugins/JRuby/imagej.rb
 
 require_relative './choose_image_directory_service'
 require_relative './exception_dialog'
-require_relative './contrast_range_service'
-require_relative './particle_size_range_service'
-require_relative './threshold_range_service'
+require_relative './contrast_range_field'
+require_relative './particle_size_range_field'
+require_relative './threshold_range_field'
 
 java_import "javax.swing.JFrame"
 
@@ -21,9 +21,9 @@ class MainFrame < JFrame
 
   def draw
     ChooseImageDirectoryService.new(self).call!
-    ContrastRangeService.new(self).call!
-    ThresholdRangeService.new(self).call!
-    ParticleSizeRangeService.new(self).call!
+    ContrastRangeField.new(self).draw!
+    ThresholdRangeField.new(self).draw!
+    ParticleSizeRangeField.new(self).draw!
 
     pack
     set_visible(true)
