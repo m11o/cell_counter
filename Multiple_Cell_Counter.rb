@@ -472,7 +472,7 @@ class ExceptionDialog
 
   def call!
     dialog = JDialog.new @frame
-    dialog.set_size 200, 150
+    dialog.set_size 300, 200
     dialog.set_location_relative_to nil
     dialog.set_title('Error Log')
 
