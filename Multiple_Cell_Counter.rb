@@ -4,12 +4,15 @@ java_import "javax.swing.JFileChooser"
 java_import "javax.swing.JTable"
 java_import "javax.swing.JButton"
 java_import "javax.swing.JComboBox"
+java_import "javax.swing.JProgressBar"
+java_import "javax.swing.JDialog"
 
 java_import "javax.swing.table.TableCellRenderer"
 
 java_import "java.awt.GridBagLayout"
 java_import "java.awt.GridBagConstraints"
 java_import "java.awt.Insets"
+java_import "java.awt.BorderLayout"
 
 java_import "java.awt.event.ActionListener"
 java_import "java.awt.event.ItemListener"
@@ -129,6 +132,52 @@ module BioFormatHelper
 end
 
 # =============================================================================
+# GridBagConstraintsBasePanel
+# =============================================================================
+class ProgressBarDialog < JDialog
+  def initialize(frame, max_count, min_count = 1)
+    super frame, 'Progress Bar'
+
+    @max_count = max_count
+    @min_count = @current_count = min_count
+
+    set_size 500, 300
+    set_location_relative_to nil
+
+    label = create_label
+    @progress_bar = create_progress_bar
+
+    get_content_pane.add(label)
+    get_content_pane.add(@progress_bar)
+    set_visible(true)
+  end
+
+  def processing(&block)
+    block.call
+    @current_count += 1
+    @progress_bar.set_value @current_count
+
+    dispose if @current_count >= @max_count
+  end
+
+  private
+
+  def create_label
+    label = JLabel.new 'Please wait ...'
+    label.set_horizontal_alignment(JLabel::CENTER)
+    label
+  end
+
+  def create_progress_bar
+    progress_bar = JProgressBar.new @min_count, @max_count
+    #progress_bar.set_string_painted true
+    #progress_bar.set_string ''
+    progress_bar.set_value 0
+    progress_bar
+  end
+end
+
+# =============================================================================
 # ChooseImageDirectoryPanel
 # =============================================================================
 class ChooseImageDirectoryPanel < GridBagConstraintsBasePanel
@@ -169,8 +218,6 @@ class ChooseImageDirectoryPanel < GridBagConstraintsBasePanel
       if selected == JFileChooser::APPROVE_OPTION
         set_selected_images_information file_chooser.get_selected_file.get_path
 
-        puts config.inspect
-
         # selected image directory
         @panel.add_component_with_constraints(0, 1, 2, 1) do |constraints|
           constraints.insets = @panel.build_padding_insets left: 10, right: 10, bottom: 5
@@ -203,16 +250,19 @@ class ChooseImageDirectoryPanel < GridBagConstraintsBasePanel
     def set_selected_images_information(image_dir)
       config.image_dir = image_dir
 
+      processing_dialog = ProgressBarDialog.new @panel.frame, Dir.glob("#{image_dir}/*").count
       config.images = []
       config.max_slice_number = 1
       Dir.glob("#{image_dir}/*") do |image_path|
         config.images << image_path
 
-        imps = get_image_plus_by_bf image_path
-        imps.each do |imp|
-          stack_number = imp.get_image_stack_size
-          config.max_slice_number = stack_number if config.max_slice_number < stack_number
-          imp.close
+        processing_dialog.processing do
+          imps = get_image_plus_by_bf image_path
+          imps.each do |imp|
+            stack_number = imp.get_image_stack_size
+            config.max_slice_number = stack_number if config.max_slice_number < stack_number
+            imp.close
+          end
         end
       end
     end
