@@ -300,7 +300,6 @@ class ImagePageComboBox < JComboBox
   private
 
   def register_items
-    add_item ''
     add_item 'all'
     return unless config.set_max_slice_number?
 
