@@ -56,6 +56,10 @@ class ConfigStore
     set? column_name
   end
 
+  def unset_attributes
+    COLUMN.select { |column_name| !set? column_name }
+  end
+
   def all?
     COLUMN.all? { |column_name| set?(column_name) }
   end
