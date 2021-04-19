@@ -400,6 +400,9 @@ class SelectedImagesTable < JTable
   end
 end
 
+# =============================================================================
+# ConfigSpinnerField
+# =============================================================================
 class ConfigSpinnerField < JSpinner
   MAX_VALUE = 9999999
   MIN_VALUE = 0
@@ -484,6 +487,9 @@ class ExceptionDialog
   end
 end
 
+# =============================================================================
+# ImplementClickListener
+# =============================================================================
 class ImplementClickListener
   include ActionListener
   include ConfigStore::Helper
