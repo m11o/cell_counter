@@ -484,6 +484,27 @@ class ExceptionDialog
   end
 end
 
+class ImplementClickListener
+  include ActionListener
+  include ConfigStore::Helper
+
+  def initialize(frame)
+    @frame = frame
+  end
+
+  private
+
+  def action_performed(_event)
+    ExceptionDialog.call! @frame, error_message and return unless config.all?
+
+    # TODO: セルカウントを実行
+  end
+
+  def error_message
+    '<html><body>未設定のカラムが存在します。<br />確認の上、再度実行してください</body></html>'
+  end
+end
+
 
 # =============================================================================
 # Build Main Window
@@ -509,6 +530,11 @@ begin
   ComponentOperator.add_component_with_constraints(pane, layout, constraints, 1, 1, 1, 1) do |component_constraints|
     component_constraints.insets = ComponentOperator.build_padding_insets 5, 10, 0, 10
     MinmaxPanel.new("particle size\n(area)(μm^2)", :particle_size_min, :particle_size_max)
+  end
+  ComponentOperator.add_component_with_constraints(pane, layout, constraints, 1, 2, 1, 1, ComponentOperator.anchor_center) do
+    button = JButton.new('実行')
+    button.add_action_listener ImplementClickListener.new frame
+    button
   end
 
   frame.pack
