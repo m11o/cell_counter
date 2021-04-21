@@ -1,5 +1,6 @@
 java_import "javax.swing.JFrame"
 java_import "javax.swing.JPanel"
+java_import "javax.swing.JLabel"
 java_import "javax.swing.JFileChooser"
 java_import "javax.swing.JTable"
 java_import "javax.swing.JButton"
@@ -8,16 +9,23 @@ java_import "javax.swing.JProgressBar"
 java_import "javax.swing.JDialog"
 java_import "javax.swing.JSpinner"
 java_import "javax.swing.SpinnerNumberModel"
+java_import "javax.swing.AbstractCellEditor"
+java_import "javax.swing.UIManager"
 
 java_import "javax.swing.event.ChangeListener"
 
 java_import "javax.swing.table.TableCellRenderer"
+java_import "javax.swing.table.TableCellEditor"
+
+java_import "javax.swing.border.LineBorder"
 
 java_import "java.awt.GridBagLayout"
 java_import "java.awt.GridBagConstraints"
 java_import "java.awt.Insets"
 java_import "java.awt.BorderLayout"
+java_import "java.awt.Color"
 
+java_import "java.awt.event.ActionEvent"
 java_import "java.awt.event.ActionListener"
 java_import "java.awt.event.ItemListener"
 java_import "java.awt.event.ItemEvent"
@@ -96,6 +104,100 @@ module ComponentOperator
 
   def self.build_padding_insets(top, left, bottom, right)
     Insets.new top, left, bottom, right
+  end
+end
+
+class ButtonColumnEditor < AbstractCellEditor
+  prepend TableCellEditor
+
+  def initialize(button)
+    super()
+    @button = button
+  end
+
+  def get_table_cell_editor_component(_table, value, _is_selected, _row, _column)
+    @button.set_text(value.nil? ? '' : value.to_s)
+    @button.set_icon nil
+
+    @value = value
+    @button
+  end
+
+  def get_cell_editor_value
+    @value
+  end
+end
+
+class ButtonColumnRenderer
+  include TableCellRenderer
+
+  def initialize(button)
+    @button = button
+  end
+
+  def get_table_cell_renderer_component(table, value, is_selected, has_focus, _row, _column)
+    if is_selected
+      @button.set_foreground(table.get_selection_foreground)
+      @button.set_background(table.get_selection_background)
+    else
+      @button.set_foreground(table.get_foreground)
+      @button.set_background(UIManager.get_color("Button.background"))
+    end
+
+    #@button.set_border(has_focus ? @focus_border : @original_border)
+
+    @button.set_text(value.nil? ? '' : value.to_s)
+    @button.set_icon nil
+    @button
+  end
+end
+
+class ButtonClickListener
+  include ActionListener
+
+  def initialize(table, &action)
+    @table = table
+    @action = action
+  end
+
+  def performed(_event)
+    row = @table.convert_row_index_to_model(@table.get_editing_row)
+    #fire_editing_stopped  # どうするか検討
+
+    event = ActionEvent.new(@table, ActionEvent::ACTION_PERFORMED, row.to_s)
+    @action.call event
+  end
+end
+
+# =============================================================================
+# TableButtonColumn
+# =============================================================================
+class TableButtonColumn
+  def initialize(table, column, &action)
+    @table = table
+
+    @render_button = JButton.new
+    @edit_button = JButton.new
+    @edit_button.set_focus_painted(false)
+    @edit_button.add_action_listener(ButtonClickListener.new(@table, &action))
+
+    @original_border = @edit_button.get_border
+
+    set_focus_border LineBorder.new(Color::BLUE)
+
+    table_model = @table.get_column_model
+    target_column = table_model.get_column(column)
+    target_column.set_cell_renderer(ButtonColumnRenderer.new(@render_button))
+    target_column.set_cell_editor(ButtonColumnEditor.new(@edit_button))
+  end
+
+  def set_focus_border(focus_border)
+    @focus_border = focus_border
+    @edit_button.set_border focus_border
+  end
+
+  def get_focus_border
+    @focus_border
   end
 end
 
@@ -332,6 +434,7 @@ end
 # =============================================================================
 class SelectedImagesTable < JTable
   include ConfigStore::Helper
+  include BioFormatHelper
 
   IMAGES_TABLE_COLUMN = %w[画像名 操作]
   RANGE_OPERATION_LABEL = '範囲指定'.freeze
@@ -363,35 +466,10 @@ class SelectedImagesTable < JTable
 
     operator_column = column_model.get_column(1)
     operator_column.set_preferred_width OPERATION_COLUMN_WIDTH
-    convert_operation_button operator_column
-  end
-
-  def convert_operation_button(column_model)
-    column_model.set_cell_renderer(OperationButtonColumnRenderer.new(RANGE_OPERATION_COLUMN))
-  end
-
-  class OperationButtonColumnRenderer
-    include TableCellRenderer
-    include ActionListener
-    include BioFormatHelper
-
-    def initialize(column_number)
-      @column_number = column_number
-    end
-
-    def get_table_cell_renderer_component(_table, value, _is_selected, _has_focus, _row, _column)
-      button = JButton.new
-      button.set_text(value.to_s)
-      button.set_icon(nil)
-      button.add_action_listener(self)
-      button
-    end
-
-    def action_performed(event)
-      table = event.get_source
+    TableButtonColumn.new(self, 1) do |event|
       row = event.get_action_command.to_i
 
-      image_filename = table.get_value_at(row - 1, @column_number)
+      image_filename = get_value_at(row, 0)
 
       imps = get_image_plus_by_bf "#{config.image_dir}/#{image_filename}"
       imps.each(&:show)
